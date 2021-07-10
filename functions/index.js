@@ -68,3 +68,24 @@ exports.addCustomClaims = functions.https.onCall((data, context) => {
     };
   });
 });
+
+exports.deleteUser = functions.https.onCall((data, context) => {
+  if (!context.auth && context.auth.token.admin !== true) {
+    throw new functions.https.HttpsError("unauthenticated", "You are not authenticated to perform this action");
+  }
+
+  const uid = data.uid;
+  if (!(typeof (uid) === "string") || uid.length === 0) {
+    throw new functions.https.HttpsError("invalid-argument", "Function must be called with a valid user id");
+  }
+
+  admin.auth().deleteUser(uid).then(() => {
+    return {
+      message: "User deleted",
+    };
+  }).catch((error) => {
+    return {
+      message: "Error deleting user" + error,
+    };
+  });
+});
