@@ -2,10 +2,8 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const algorithm = require("aes256");
-// const eccrypto = require("eccrypto");
 const crypto = require("crypto");
 
-// Get the `FieldValue` object
 admin.initializeApp();
 
 const keys = admin.firestore().collection("keys");
